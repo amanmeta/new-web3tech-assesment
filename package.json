@@ -1,0 +1,33 @@
+{
+  "name": "tech-assessment-main",
+  "version": "1.0.0",
+  "description": "The goal of this assessment is to evaluate your ability to:",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "axios": "^1.16.0",
+    "config": "^4.4.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "ethers": "^6.16.0",
+    "express": "^5.2.1",
+    "get-port": "^7.2.0",
+    "mongoose": "^9.6.2",
+    "morgan": "^1.10.1",
+    "request": "^2.88.2",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "kill-port": "^2.0.1",
+    "mongoose-lean-hooks": "^0.5.3",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
+  }
+}
