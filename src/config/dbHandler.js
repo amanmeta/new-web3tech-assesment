@@ -1,61 +1,126 @@
 const mongoose = require('mongoose');
-const leanhooks = require('mongoose-lean-hooks');
-const req = require('request');
-const connectDB = require('./db.js');
-const utils = require('./utils.js');
+
+const connectDB =
+require('./db.js');
+
 
 const dbHandler = {
+
     connect: async () => {
-        if (!process.env.MONGO_URI) {
-            console.log("MONGO_URI not set — skipping DB connection");
-            return;
+
+        try {
+
+            if (!process.env.MONGO_URI) {
+
+                console.log(
+                    "MONGO_URI not set"
+                );
+
+                return;
+            }
+
+            if (
+                mongoose.connection.readyState === 1
+            ) {
+
+                console.log(
+                    "MongoDB already connected"
+                );
+
+                return;
+            }
+
+            await connectDB();
+
+        } catch (error) {
+
+            console.error(
+                "MongoDB connection failed:",
+                error.message
+            );
         }
-        if (mongoose.connection.readyState === 1) {
-            console.log("Already connected to MongoDB");
-            return;
-        }
-        await connectDB();
     },
+
 
     disconnect: async () => {
-        if (mongoose.connection.readyState !== 0) {
-            await mongoose.disconnect();
-            console.log("MongoDB disconnected");
+
+        try {
+
+            if (
+                mongoose.connection.readyState !== 0
+            ) {
+
+                await mongoose.disconnect();
+
+                console.log(
+                    "MongoDB disconnected"
+                );
+            }
+
+        } catch (error) {
+
+            console.error(
+                error.message
+            );
         }
     },
 
-    isConnected: () => mongoose.connection.readyState === 1,
 
-    // getPlugin by name
+    isConnected: () =>
+        mongoose.connection.readyState === 1,
+
+
     getPlugin: async (pluginName) => {
-        if (!mongoose.connection.readyState) await connectDB();
-        return await Plugin.findOne({ name: pluginName });
+
+        return await Plugin.findOne({
+            name: pluginName
+        });
     },
 
-    // addPlugin
+
     addPlugin: async (pluginData) => {
-        if (!mongoose.connection.readyState) await connectDB();
-        const plugin = new Plugin(pluginData);
+
+        const plugin =
+            new Plugin(pluginData);
+
         return await plugin.save();
     },
 
-    // timePlugin
-    leanHooksPlugin: async (schema) => {
-        schema.plugin(leanhooks);
-    },
-    // list all plugins
     listPlugins: async () => {
-        if (!mongoose.connection.readyState) await connectDB();
+
         return await Plugin.find({});
-    },
+    }
 };
 
-const pluginSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    version: { type: String },
-    enabled: { type: Boolean, default: true },
-}, { leanhooks: true });
 
-const Plugin = (mongoose.models.Plugin || mongoose.model("Plugin", pluginSchema));
+const pluginSchema =
+new mongoose.Schema({
 
-module.exports = dbHandler;
+    name: {
+        type: String,
+        required: true
+    },
+
+    version: {
+        type: String
+    },
+
+    enabled: {
+        type: Boolean,
+        default: true
+    }
+
+});
+
+
+const Plugin =
+mongoose.models.Plugin ||
+
+mongoose.model(
+    "Plugin",
+    pluginSchema
+);
+
+
+module.exports =
+dbHandler;

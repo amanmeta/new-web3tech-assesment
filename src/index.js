@@ -37,9 +37,9 @@ const checkPort = async (port, maxPort = 65535) => {
     app.use(morgan('dev'));
 
     // Routes
-    app.use('/api/items', require('./routes/items'));
-    app.use('/api/stats', require('./routes/stats'));
-    app.use('/api/token', require('./routes/token'));
+    app.use('/api/items', require('./routes/items.js'));
+    app.use('/api/stats', require('./routes/stats.js'));
+    app.use('/api/token', require('./routes/token.js'));
 
     require('./config/dbHandler.js').connect();
 
