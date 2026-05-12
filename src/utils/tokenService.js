@@ -27,32 +27,20 @@ const CONTRACTS = {
     ethereum: {
         rpc: EthMainnet,
         contract:
-            "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+            "0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"
     },
 
     polygon: {
         rpc: PolygonMainnet,
         contract:
-            "0xc2132D05D31c914A87C6611C10748AEb04B58e8F"
+            "0xab594600376ec9fd91f8e885dadf0ce036862de0"
     },
 
     bsc: {
         rpc: BscMainnet,
         contract:
-            "0x55d398326f99059fF775485246999027B3197955"
+            "0x0567f2323251f0aab15c8dfb1967e4e8a7d42aee"
     },
-
-    arbitrum: {
-        rpc: ArbitrumMainnet,
-        contract:
-            "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9"
-    },
-
-    avalanche: {
-        rpc: Avalanche,
-        contract:
-            "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7"
-    }
 };
 
 
@@ -103,21 +91,31 @@ async (chain) => {
     const contract =
         getContract(chain);
 
-    const name =
-        await contract.name();
-
-    const symbol =
-        await contract.symbol();
-
-    const decimals =
-        await contract.decimals();
+    const data =
+        await contract.latestRoundData();
 
     return {
-        chain,
-        name,
-        symbol,
-        decimals:
-            Number(decimals)
+
+        contract:
+            CONTRACTS[chain].contract,
+
+        network:
+            `${chain}-mainnet`,
+
+        roundId:
+            data.roundId.toString(),
+
+        answer:
+            data.answer.toString(),
+
+        startedAt:
+            Number(data.startedAt),
+
+        updatedAt:
+            Number(data.updatedAt),
+
+        answeredInRound:
+            data.answeredInRound.toString()
     };
 };
 

@@ -14,21 +14,17 @@ const tokenCheck = async (req, res) => {
     }
     console.log("step 1");
     const tokenInfo = await tokenService.getTokenInfo(chain);
-    console.log("step 2");
-    const walletBalance = await tokenService.getWalletBalance(chain, wallet);
-    console.log("step 3");
-    const owner = await tokenService.getOwner(chain);
+    // const walletBalance = await tokenService.getWalletBalance(chain, wallet);
+    // const owner = await tokenService.getOwner(chain);
 
     console.log(tokenInfo);
 
-    console.log(walletBalance);
+    // console.log(walletBalance);
+    // console.log(owner);
 
-    console.log(owner);
-    console.log("step 4");
     return res.json({
       success: true,
-      tokenInfo,
-      walletBalance,
+      tokenInfo
     });
   } catch (error) {
     console.error("Error:", error);
